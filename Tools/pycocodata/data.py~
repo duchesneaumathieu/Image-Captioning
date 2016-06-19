@@ -1,0 +1,6 @@
+from pycocotools.coco import COCO
+dataDir='/home/mathieu/Data/MSCOCO'
+obj=COCO('%s/annotations/instances_train2014.json'%(dataDir))
+cap=COCO('%s/annotations/captions_train2014.json'%(dataDir))
+val_obj=COCO('%s/annotations/instances_val2014.json'%(dataDir))
+val_cap=COCO('%s/annotations/captions_val2014.json'%(dataDir))
