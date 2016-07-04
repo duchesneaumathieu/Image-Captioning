@@ -1,5 +1,6 @@
 from onehot import number2onehot
 import numpy as np
+from theano import config
 
 def beamsearch(model, dictio, inputs, beam=10, memory=32, maxlen=20, sampling=True, printing=False):
     def allnotend(ds):
@@ -30,7 +31,7 @@ def beamsearch(model, dictio, inputs, beam=10, memory=32, maxlen=20, sampling=Tr
             cells += [ds[i]['cell']]
             hidds += [ds[i]['hidd']]
             sps += [ds[i]]
-        return np.asarray(words), np.asarray(cells), np.asarray(hidds), sps
+        return np.asarray(words, dtype=config.floatX), np.asarray(cells, dtype=config.floatX), np.asarray(hidds, dtype=config.floatX), sps
 
     def addbranch(probs, cs, hs, sps, beam):
         new = []
@@ -45,14 +46,14 @@ def beamsearch(model, dictio, inputs, beam=10, memory=32, maxlen=20, sampling=Tr
         return new
 
     model.reset()
-    _, c, h = model.step([inputs],0,0)
+    _, c, h = model.step([inputs.astype(config.floatX)],0,0)
     n=0
     unended = [dict([('word', 'BEG'), ('sentence', ''), ('cell', c[0]), ('hidd', h[0]), ('prob', 1)])]
     ended = []
     while(len(unended) > 0 and n < maxlen):
         n += 1
         words, cells, hidds, sps = getInputs(unended)
-        probs, cs, hs = model.step(words, cells, hidds)
+        probs, cs, hs = model.step(words.astype(config.floatX), cells.astype(config.floatX), hidds.astype(config.floatX))
         unended = addbranch(probs, cs, hs, sps, beam)
         ended, unended = separate(ended, unended, memory)
         #print len(ended), len(unended), len(ended)+len(unended)

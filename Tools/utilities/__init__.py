@@ -5,6 +5,7 @@ from sampler import *
 from model import *
 from lstm_xent import *
 from generate import *
+import matplotlib
 import matplotlib.pyplot as plt
 import os.path
 import datetime

@@ -1,6 +1,6 @@
 from pycocotools.coco import COCO
 import json
-DATA_FOLDER='/home/mathieu/Data/MSCOCO'
+DATA_FOLDER='/u/duchema/Data/MsCoco'
 COCO_TRAIN_OBJ_FILE='%s/annotations/instances_train2014.json'%(DATA_FOLDER)
 COCO_TRAIN_CAP_FILE='%s/annotations/captions_train2014.json'%(DATA_FOLDER)
 COCO_VALID_OBJ_FILE='%s/annotations/instances_val2014.json'%(DATA_FOLDER)

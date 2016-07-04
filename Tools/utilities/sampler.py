@@ -4,6 +4,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from pycocodata import *
 from onehot import *
+from theano import config
 import numpy as np
 
 class Sampler:
@@ -34,7 +35,7 @@ class Sampler:
         for k, m in self.chooseN(N=N).iteritems():
             x += [self.retriever(m['image_id'], m['caption'])]
             y += [sentence2onehot(self.dictio, 'BEG '+m['caption']+' END')]
-        return np.asarray(x), np.asarray(y)
+        return np.asarray(x, dtype=config.floatX), np.asarray(y, dtype=config.floatX)
     
     def fixSample(self, n):
         x, y, vx, vy = [], [], [], []
@@ -44,4 +45,4 @@ class Sampler:
         for k, m in self.fixSamp[n]['valid'].iteritems():
             vx += [self.retriever(m['image_id'], m['caption'])]
             vy += [sentence2onehot(self.dictio, 'BEG '+m['caption']+' END')]
-        return (np.asarray(x), np.asarray(y)), (np.asarray(vx), np.asarray(vy))
+        return (np.asarray(x, dtype=config.floatX), np.asarray(y, dtype=config.floatX)), (np.asarray(vx, dtype=config.floatX), np.asarray(vy, dtype=config.floatX))
